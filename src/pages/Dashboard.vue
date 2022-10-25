@@ -141,15 +141,17 @@
       TaskList,
       UserTable
     },
-    data() {
+    data() { 
+      var dataapi = new FormData();
       fetch('http://ecocim-backend-brisatelitv2.beit.co.id/api/Dashboard/GetDashboardWidgetData?widget=PSCF_UPS_RoomTH&chart_name=PSCF_UPS_RoomTH')
           .then(function(response) {
             return response.json()
           })
           .then(function(data) {
-              const data2 = JSON.stringify(data)
-              console.log(data2);
+              const dataapi = data
+              console.log(dataapi);
           })
+      console.log(dataapi.ScreenName);
       return {
                       bigLineChart: {
                         allData: [
