@@ -10,53 +10,13 @@
       })
   var data = JSON.parse(window.localStorage.getItem("api2"));
   console.log(data)
+  var ListOfSensor = data.ListOfSensor
 </script>
 
 <template>
   <div>
-    <div class="row">
-      <div class="col-12">
-        <card type="chart">
-          <template slot="header">
-            <div class="row">
-              <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
-                <h5 class="card-category">{{ data.ScreenName }}</h5>
-                <h2 class="card-title">{{ data.SensorType }}</h2>
-              </div>
-              <div class="col-sm-6">
-                <div class="btn-group btn-group-toggle"
-                     :class="isRTL ? 'float-left' : 'float-right'"
-                     data-toggle="buttons">
-                  <label v-for="(option, index) in bigLineChartCategories"
-                         :key="option"
-                         class="btn btn-sm btn-primary btn-simple"
-                         :class="{active: bigLineChart.activeIndex === index}"
-                         :id="index">
-                    <input type="radio"
-                           @click="initBigChart(index)"
-                           name="options" autocomplete="off"
-                           :checked="bigLineChart.activeIndex === index">
-                    {{option}}
-                  </label>
-                </div>
-              </div>
-            </div>
-          </template>
-          <div class="chart-area">
-            <line-chart style="height: 100%"
-                        ref="bigChart"
-                        chart-id="big-line-chart"
-                        :chart-data="bigLineChart.chartData"
-                        :gradient-colors="bigLineChart.gradientColors"
-                        :gradient-stops="bigLineChart.gradientStops"
-                        :extra-options="bigLineChart.extraOptions">
-            </line-chart>
-          </div>
-        </card>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-4" :class="{'text-right': isRTL}">
+    <!--div class="row">
+      <div class="col-lg-6" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
             <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5>
@@ -73,7 +33,7 @@
           </div>
         </card>
       </div>
-      <div class="col-lg-4" :class="{'text-right': isRTL}">
+      <div class="col-lg-6" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
             <h5 class="card-category">{{$t('dashboard.dailySales')}}</h5>
@@ -89,7 +49,7 @@
           </div>
         </card>
       </div>
-      <div class="col-lg-4" :class="{'text-right': isRTL}">
+      <div class="col-lg-6" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
             <h5 class="card-category">{{$t('dashboard.completedTasks')}}</h5>
@@ -101,6 +61,47 @@
                         :chart-data="greenLineChart.chartData"
                         :gradient-stops="greenLineChart.gradientStops"
                         :extra-options="greenLineChart.extraOptions">
+            </line-chart>
+          </div>
+        </card>
+      </div>
+    </div-->
+    <div class="row">
+      <div class="col-12">
+        <card type="chart">
+          <template slot="header">
+            <div class="row">
+              <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
+                <h5 class="card-category">{{ data.WidgetTitle }}</h5>
+                <h2 class="card-title">{{ data.ChartName }}</h2>
+              </div>
+              <div class="col-sm-6">
+                <div class="btn-group btn-group-toggle"
+                     :class="isRTL ? 'float-left' : 'float-right'"
+                     data-toggle="buttons">
+                  <label v-for="(option, index) in ListOfSensor"
+                         :key="option.SubDeviceName"
+                         class="btn btn-sm btn-primary btn-simple"
+                         :class="{active: bigLineChart.activeIndex === index}"
+                         :id="index">
+                    <input type="radio"
+                           @click="initBigChart(index)"
+                           name="options" autocomplete="off"
+                           :checked="bigLineChart.activeIndex === index">
+                    {{option.SubDeviceName}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </template>
+          <div class="chart-area">
+            <line-chart style="height: 100%"
+                        ref="bigChart"
+                        chart-id="big-line-chart"
+                        :chart-data="bigLineChart.chartData"
+                        :gradient-colors="bigLineChart.gradientColors"
+                        :gradient-stops="bigLineChart.gradientStops"
+                        :extra-options="bigLineChart.extraOptions">
             </line-chart>
           </div>
         </card>
@@ -147,6 +148,16 @@
   import UserTable from './Dashboard/UserTable';
   import config from '@/config';
 
+  var data = JSON.parse(window.localStorage.getItem("api2"));
+  var ListOfSensor = data.ListOfSensor
+  const ListOfSensor2 = [];
+  const ListOfSensor3 = [];
+  ListOfSensor.forEach(function(x) {
+    ListOfSensor2.push(x.ListData);
+  })
+  ListOfSensor.forEach(function(x) {
+    ListOfSensor3.push(x.ListDateTime);
+  })
   export default {
     components: {
       LineChart,
@@ -157,15 +168,11 @@
     data() { 
       return {
                 bigLineChart: {
-                    allData: [
-                        [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],
-                        [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120],
-                        [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130]
-                    ],
+                    allData: ListOfSensor2,
                     activeIndex: 0,
                     chartData: {
                         datasets: [{}],
-                        labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                        labels: ['123', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
                     },
                     extraOptions: chartConfigs.purpleChartOptions,
                     gradientColors: config.colors.primaryGradient,
@@ -268,7 +275,7 @@
             pointRadius: 4,
             data: this.bigLineChart.allData[index]
           }],
-          labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+          labels: ListOfSensor3[0],
         }
         this.$refs.bigChart.updateGradients(chartData);
         this.bigLineChart.chartData = chartData;
