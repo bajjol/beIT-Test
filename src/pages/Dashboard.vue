@@ -12,67 +12,25 @@
   console.log(data)
   var ListOfSensor = data.ListOfSensor
 </script>
-
+<style>
+  .card-chart .card-header h5 {
+    font-size: 2.75rem;
+    text-align: center;
+  }
+  h3.card-title {
+    font-size: 5rem;
+    text-align: center;
+  }
+</style>
 <template>
   <div>
-    <!--div class="row">
-      <div class="col-lg-6" :class="{'text-right': isRTL}">
-        <card type="chart">
-          <template slot="header">
-            <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5>
-            <h3 class="card-title"><i class="tim-icons icon-bell-55 text-primary "></i> 763,215</h3>
-          </template>
-          <div class="chart-area">
-            <line-chart style="height: 100%"
-                        chart-id="purple-line-chart"
-                        :chart-data="purpleLineChart.chartData"
-                        :gradient-colors="purpleLineChart.gradientColors"
-                        :gradient-stops="purpleLineChart.gradientStops"
-                        :extra-options="purpleLineChart.extraOptions">
-            </line-chart>
-          </div>
-        </card>
-      </div>
-      <div class="col-lg-6" :class="{'text-right': isRTL}">
-        <card type="chart">
-          <template slot="header">
-            <h5 class="card-category">{{$t('dashboard.dailySales')}}</h5>
-            <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info "></i> 3,500€</h3>
-          </template>
-          <div class="chart-area">
-            <bar-chart style="height: 100%"
-                       chart-id="blue-bar-chart"
-                       :chart-data="blueBarChart.chartData"
-                       :gradient-stops="blueBarChart.gradientStops"
-                       :extra-options="blueBarChart.extraOptions">
-            </bar-chart>
-          </div>
-        </card>
-      </div>
-      <div class="col-lg-6" :class="{'text-right': isRTL}">
-        <card type="chart">
-          <template slot="header">
-            <h5 class="card-category">{{$t('dashboard.completedTasks')}}</h5>
-            <h3 class="card-title"><i class="tim-icons icon-send text-success "></i> 12,100K</h3>
-          </template>
-          <div class="chart-area">
-            <line-chart style="height: 100%"
-                        chart-id="green-line-chart"
-                        :chart-data="greenLineChart.chartData"
-                        :gradient-stops="greenLineChart.gradientStops"
-                        :extra-options="greenLineChart.extraOptions">
-            </line-chart>
-          </div>
-        </card>
-      </div>
-    </div-->
     <div class="row">
       <div class="col-12">
         <card type="chart">
           <template slot="header">
             <div class="row">
               <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
-                <h5 class="card-category">{{ data.WidgetTitle }}</h5>
+                <h5 class="card-category" style="text-align:left">{{ data.WidgetTitle }}</h5>
                 <h2 class="card-title">{{ data.ChartName }}</h2>
               </div>
               <div class="col-sm-6">
@@ -108,6 +66,32 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-lg-4" :class="{'text-right': isRTL}">
+        <card type="chart">
+          <template slot="header">
+            <h5 class="card-category">Minimum</h5>
+            <h3 class="card-title"><i class="tim-icons icon-bell-55 text-primary "></i> {{min}}</h3>
+          </template>
+        </card>
+      </div>
+      <div class="col-lg-4" :class="{'text-right': isRTL}">
+        <card type="chart">
+          <template slot="header">
+            <h5 class="card-category">Average</h5>
+            <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info " ></i> {{avg}}</h3>
+          </template>
+        </card>
+      </div>
+      <div class="col-lg-4" :class="{'text-right': isRTL}">
+        <card type="chart">
+          <template slot="header">
+            <h5 class="card-category">Maksimum</h5>
+            <h3 class="card-title"><i class="tim-icons icon-send text-success "></i> {{max}}</h3>
+          </template>
+        </card>
+      </div>
+    </div>
+    <!--div class="row">
       <div class="col-lg-6 col-md-12">
         <card type="tasks" :header-classes="{'text-right': isRTL}">
           <template slot="header">
@@ -137,7 +121,7 @@
           </div>
         </card>
       </div>
-    </div>
+    </div-->
   </div>
 </template>
 <script>
@@ -152,11 +136,23 @@
   var ListOfSensor = data.ListOfSensor
   const ListOfSensor2 = [];
   const ListOfSensor3 = [];
+  const ListOfSensoravg = [];
+  const ListOfSensormin = [];
+  const ListOfSensormax = [];
   ListOfSensor.forEach(function(x) {
     ListOfSensor2.push(x.ListData);
   })
   ListOfSensor.forEach(function(x) {
     ListOfSensor3.push(x.ListDateTime);
+  })
+  ListOfSensor.forEach(function(x) {
+    ListOfSensoravg.push(x.AverageVal);
+  })
+  ListOfSensor.forEach(function(x) {
+    ListOfSensormin.push(x.Minimum);
+  })
+  ListOfSensor.forEach(function(x) {
+    ListOfSensormax.push(x.Maksimum);
   })
   export default {
     components: {
@@ -243,7 +239,10 @@
                     },
                     gradientColors: config.colors.primaryGradient,
                     gradientStops: [1, 0.4, 0],
-                }
+                },
+                avg:{},
+                min:{},
+                max:{}
               }
     },
     computed: {
@@ -280,6 +279,9 @@
         this.$refs.bigChart.updateGradients(chartData);
         this.bigLineChart.chartData = chartData;
         this.bigLineChart.activeIndex = index;
+        this.avg = ListOfSensoravg[index];
+        this.min = ListOfSensormin[index];
+        this.max = ListOfSensormax[index];
       }
     },
     mounted() {
@@ -289,7 +291,6 @@
         this.$rtl.enableRTL();
       }
       this.initBigChart(0);
-      const asdqwe = 'asd';
     },
     beforeDestroy() {
       if (this.$rtl.isRTL) {
