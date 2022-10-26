@@ -1,15 +1,27 @@
+<script setup>
+  const asdqwe = 'asd'
+  fetch('http://ecocim-backend-brisatelitv2.beit.co.id/api/Dashboard/GetDashboardWidgetData?widget=PSCF_UPS_RoomTH&chart_name=PSCF_UPS_RoomTH')
+      .then(function(response) {
+        return response.json()
+      })
+      .then(function(data) {
+        const data2 = JSON.stringify(data);
+        window.localStorage.setItem('api2', data2);
+      })
+  var data = JSON.parse(window.localStorage.getItem("api2"));
+  console.log(data)
+</script>
+
 <template>
   <div>
-
     <div class="row">
-      <div class="testitle">{{ this.data.ScreenName }}</div>
       <div class="col-12">
         <card type="chart">
           <template slot="header">
             <div class="row">
               <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
-                <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5>
-                <h2 class="card-title">{{$t('dashboard.performance')}}</h2>
+                <h5 class="card-category">{{ data.ScreenName }}</h5>
+                <h2 class="card-title">{{ data.SensorType }}</h2>
               </div>
               <div class="col-sm-6">
                 <div class="btn-group btn-group-toggle"
@@ -143,17 +155,6 @@
       UserTable
     },
     data() { 
-      fetch('http://ecocim-backend-brisatelitv2.beit.co.id/api/Dashboard/GetDashboardWidgetData?widget=PSCF_UPS_RoomTH&chart_name=PSCF_UPS_RoomTH')
-          .then(function(response) {
-            return response.json()
-          })
-          .then(function(data) {
-            const data2 = JSON.stringify(data);
-            window.localStorage.setItem('api2', data2);
-          })
-      var data = JSON.parse(window.localStorage.getItem("api2"));
-      console.log(data)
-      console.log(data.ScreenName)
       return {
                 bigLineChart: {
                     allData: [
@@ -281,6 +282,7 @@
         this.$rtl.enableRTL();
       }
       this.initBigChart(0);
+      const asdqwe = 'asd';
     },
     beforeDestroy() {
       if (this.$rtl.isRTL) {
