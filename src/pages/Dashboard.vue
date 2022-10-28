@@ -1,12 +1,14 @@
 <script setup>
   const asdqwe = 'asd'
-  fetch('http://ecocim-backend-brisatelitv2.beit.co.id/api/Dashboard/GetDashboardWidgetData?widget=PSCF_UPS_RoomTH&chart_name=PSCF_UPS_RoomTH')
+  fetch('https://ecocim-backend-brisatelitv2.beit.co.id/api/Dashboard/GetDashboardWidgetData?widget=PSCF_UPS_RoomTH&chart_name=PSCF_UPS_RoomTH')
       .then(function(response) {
         return response.json()
       })
       .then(function(data) {
         const data2 = JSON.stringify(data);
+        console.log(data2);
         window.localStorage.setItem('api2', data2);
+        console.log('asd');
       })
   var data = JSON.parse(window.localStorage.getItem("api2"));
   console.log(data)
@@ -132,26 +134,36 @@
   import UserTable from './Dashboard/UserTable';
   import config from '@/config';
 
+  fetch('https://ecocim-backend-brisatelitv2.beit.co.id/api/Dashboard/GetDashboardWidgetData?widget=PSCF_UPS_RoomTH&chart_name=PSCF_UPS_RoomTH')
+      .then(function(response) {
+        return response.json()
+      })
+      .then(function(data) {
+        const data2 = JSON.stringify(data);
+        console.log(data2);
+        window.localStorage.setItem('api2', data2);
+      })
   var data = JSON.parse(window.localStorage.getItem("api2"));
-  var ListOfSensor = data.ListOfSensor
+  console.log(data);
+  var ListOfSensor123 = data.ListOfSensor;
   const ListOfSensor2 = [];
   const ListOfSensor3 = [];
   const ListOfSensoravg = [];
   const ListOfSensormin = [];
   const ListOfSensormax = [];
-  ListOfSensor.forEach(function(x) {
+  ListOfSensor123.forEach(function(x) {
     ListOfSensor2.push(x.ListData);
   })
-  ListOfSensor.forEach(function(x) {
+  ListOfSensor123.forEach(function(x) {
     ListOfSensor3.push(x.ListDateTime);
   })
-  ListOfSensor.forEach(function(x) {
+  ListOfSensor123.forEach(function(x) {
     ListOfSensoravg.push(x.AverageVal);
   })
-  ListOfSensor.forEach(function(x) {
+  ListOfSensor123.forEach(function(x) {
     ListOfSensormin.push(x.Minimum);
   })
-  ListOfSensor.forEach(function(x) {
+  ListOfSensor123.forEach(function(x) {
     ListOfSensormax.push(x.Maksimum);
   })
   export default {
