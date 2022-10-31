@@ -2,7 +2,7 @@
 
 ## Vue-cli 3 && Firebase
 
-https://beit-test.web.app/#/dashboard
+[DEMO](https://beit-test.web.app/#/dashboard)
 
 * Fork the repository
 * Clone it on your PC
